@@ -1,0 +1,192 @@
+\documentclass[a4paper]{ltxdoc}
+
+\usepackage{holtxdoc}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{tikz}
+\hypersetup{%
+  plainpages=false,%
+  bookmarksnumbered,%
+  pdftitle={The quran-ur Package},%
+  pdfkeywords={quran-ur, surah, ayah, juz, hizb, ruku, manzil},%
+  pdfauthor={Seiied-Mohammad-Javad Razavian},%
+  baseurl={http://mirrors.ctan.org/macros/xetex/latex/quran-ur/doc/quran-ur-doc.pdf},%
+}
+\usepackage[all]{quran-ur}
+% because of definition of \XeTeX and \XeLaTeX symbols in bidi, 
+% I should undef these macro that are also defined in holtxdoc package. 
+\makeatletter
+\bidi@undef\XeTeX
+\bidi@undef\XeLaTeX
+\makeatother
+\usepackage{arabxetex}
+\makeatletter
+\bidi@BeforeBeginEnvironment{declcs}{\vspace*{-4mm}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\boxcs#1{\leftline{\fbox{\mcs{#1}}}}
+\def\mcs#1{\lr{\texttt{\textbackslash{}#1}}}
+\def\tt#1{\lr{\texttt{#1}}}
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  basicstyle=\footnotesize\sffamily,
+  frame=tb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!10},
+}
+
+% Define box and box title style
+\tikzstyle{mybox} = [draw=black, fill=gray!20, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+\tikzstyle{fancytitle} =[fill=gray, text=white]
+
+\def\mx#1#2{\mybox{#1}{#2}{.45\textwidth}}
+\def\mxf#1#2{\mybox{#1}{#2}{\textwidth}}
+
+\def\mybox#1#2#3{
+\begin{tikzpicture}
+\node [mybox] (box){%
+    \begin{minipage}[t]{#3}
+        #2
+    \end{minipage}
+};
+\node[fancytitle, anchor=west, right=10pt] at (box.north west) {\small \cs{#1}};
+\node (hole) [anchor=north east, left=5pt ] at (box.north east) { \tikz\fill[very thick,white] (0,0) circle (12pt); };
+\node[ ] at (hole.center) {\includegraphics[width=.05\textwidth]{quran.png}};
+\end{tikzpicture}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\includegraphics[scale=.3]{quran.png}\\
+The \xpackage{quran-ur} Package\footnote{To one having devoted his life to the Quran}\\
+\Large User documentation for \quranurversion}
+\author{Seiied Mohammad Javad Razavian\\\xemail{javadr@gmail.com}}
+
+\date{\quranurdate}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+%\newpage
+
+\vfill
+\section{Introduction}
+The \xpackage{quran} package provides several macros for
+typesetting the whole or any parts of The Holy Quran based on its popular divisions. That package also develops 
+commands for some translations of the Holy Quran including German, Engilsh, and Persian. 
+Some people asked me to include the other translations into the \xpackage{quran} package, 
+but because of some technical issues I decided to create new packages for other translations. 
+One of these variations is \xpackage{quran-ur} including all Urdu translations of the Holy Quran 
+provided by \url{tanzil.net}, i.e. 
+\emph{``Abul A'ala Maududi''}, \emph{``Ahmed Raza Khan''}, 
+\emph{``Ahmed Ali''}, \emph{``Fateh Muhammad Jalandhry''},
+\emph{``Tahir ul Qadri''}, \emph{``Syed Zeeshan Haider Jawadi''}, 
+\emph{``Muhammad Junagarhi''}, and \emph{``Muhammad Hussain Najafi.''}
+
+
+\newpage
+\section{Loading The Package}
+The package will be loaded in the ordinary way
+\cs{usepackage[option]\{quran-ur\}}.
+After loading the package, it writes some information about itself to the
+terminal and to the log file, too. The information is something like:
+
+\begin{lstlisting}[style=BashInputStyle, language=tex, escapechar={|}]
+Package: quran-ur |\quranurdate| |\quranurversion| Urdu translations extension to the quran package.
+\end{lstlisting}
+
+
+\section{Options of The Package}\label{sec:qurantypesetting}
+There are eight options by the names of \xpackage{ahmedali}, \xpackage{jalandhry}, \xpackage{jawadi}, 
+\xpackage{junagarhi}, \xpackage{kanzuliman}, \xpackage{maududi}, \xpackage{najafi}, and \xpackage{qadri}.
+%\marginpar{\ttfamily ahmedali\smallskip}\marginpar{\ttfamily jalandhry\smallskip} 
+%\marginpar{\ttfamily jawadi}\marginpar{\ttfamily junagarhi\smallskip}
+%\marginpar{\ttfamily kanzuliman}\marginpar{\ttfamily maududi\smallskip}
+%\marginpar{\ttfamily najafi}\marginpar{\ttfamily qadri\smallskip}
+%\marginpar{\ttfamily all\smallskip}
+If you pass any combinations of these options, you will be enabled to typeset these translations in a way 
+that the \xpackage{quran} package does. 
+There is also \xpackage{all} option which loads all Urdu translations provided by the \xpackage{quran-ur} package.
+The package loads \xpackage{jalandhry} option by default.
+
+This package is completely built on top of the \xpackage{quran} package, therefore you can pass every options
+defined in that package to the \xpackage{quran-ur} package. 
+
+\section{Differences between \xpackage{quran} and \xpackage{quran-ur}}
+At first glance, \xpackage{quran-ur}  offers all functionalities of \xpackage{quran}. Therefore in this case 
+both are the same except that \xpackage{quran-ur} adds eight other Urdu translations, namely 
+`ahmedali', `jalandhry', `jawadi', `junagarhi', `kanzuliman', `maududi', `najafi', and `qadri'.
+All Urdu translations provided by the package are shown in table~\ref{tab:urtrans}.
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|l|c|}
+    \toprule
+    order & \multicolumn{1}{c|}{translator} & option's name \\\midrule
+    1 & Ahmed Ali & ahmedali \\
+    2 & Fateh Muhammad Jalandhry & jalandhry \\
+    3 & Syed Zeeshan Haider Jawadi  & jawadi \\
+    4 & Muhammad Junagarhi & junagarhi \\
+    5 & Ahmed Raza Khan  &  kanzuliman \\
+    6 & Abul A'ala Maududi &  maududi \\
+    7 & Muhammad Hussain Najafi &  najafi \\
+    8 & Tahir ul Qadri  &  qadri \\
+    \bottomrule
+\end{tabular}
+    \caption{Urdu translations used in the package and their option's names}
+    \label{tab:urtrans}
+\end{table}
+
+\subsection{How to Change the Current Urdu Translation}
+    The \xpackage{quran-ur} package uses jalandhry's translation by default. 
+    The following macro could be used to change the default Urdu tranliteration. 
+    \begin{declcs}{urSetTrans}\marg{index}
+    \end{declcs}    
+    The \textit{index} could be an integer or a name; both ``order'' and ``option's name'' columns
+    shown in Table~\ref{tab:urtrans} are appliable. Both \cs{urSetTrans\{3\}} and \cs{urSetTrans\{jawadi\}}, for example,
+    have the same effect. 
+    
+\subsection{How to Get the Name of Current Urdu Translation}
+    \begin{declcs}{urGetTrans}
+    \end{declcs}    
+    The above macro returns the name of current Urdu translation, i.e.  one of 
+    `ahmedali', `jalandhry', `jawadi', `junagarhi', `kanzuliman', `maududi', `najafi', and `qadri'.
+
+\subsection{How to Typeset the Urdu Translation}
+    It's completely similiar to the \xpackage{quran} package with extra \texttt{ur} at the end of macro's name. 
+    All the following macros are usable.
+    
+\begin{multicols}{2}    
+    \begin{itemize}
+        \item \cs{quransurahur}
+        \item \cs{quranayahur}
+        \item \cs{quranpageur}
+        \item \cs{quranjuzur}
+        \item \cs{quranhizbur}
+        \item \cs{quranquarterur}
+        \item \cs{quranrukuur}
+        \item \cs{quranmanzilur}
+        \item \cs{qurantextur}
+    \end{itemize}
+\end{multicols}    
+
+\def\printsurah#1{\centerline{\mxf{urSetTrans\{#1\}\textbackslash{}quransurahur*}
+{\setLTR\urSetTrans{#1}\begin{arab}\quransurahur*\end{arab}}}}
+
+    \centerline{\mxf{quransurah*}
+    {\begin{arab}\small\quransurah*\end{arab}}}
+    \printsurah{ahmedali}
+    \printsurah{jalandhry}
+    \printsurah{jawadi}
+    \printsurah{junagarhi}  
+    \printsurah{kanzuliman}  
+    \printsurah{maududi}
+    \printsurah{najafi}
+    \printsurah{qadri}
+
+\end{document}
+
