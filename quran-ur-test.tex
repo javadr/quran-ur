@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage[margin=2cm]{geometry}
 \usepackage{arabxetex} % for typesetting Arabic text in Rigth−To−Left direction
-\usepackage[all, trans={fa,en}]{quran-ur} % trans={fa,en,de,lt} option would be sent to quran package
+\usepackage[all, trans={fa}]{quran-ur} % trans={fa} option would be sent to quran package
 
 \newcommand{\compare}[1]{%
     \def\setTr##1{\par\urSetTrans{##1}\fbox{\makebox[2cm]{\urGetTrans}}}
@@ -16,21 +16,22 @@
     \setTr{qadri} #1
 \par
 }
-\newcommand{\para}[2]{\noindent%
-\begin{minipage}{.4\textwidth}
+\newcommand{\mybox}[2]{\noindent%
+\begin{minipage}{.48\textwidth}
 #1
-\end{minipage}\hfill
-\begin{minipage}{.55\textwidth}
-#2
-\end{minipage}\par
-}
+#2\\
+\end{minipage}}
+\newcommand{\myURbox}[1]{\mybox{#1}{\hrulefill\fbox{\makebox[2cm]{\urGetTrans}}}}
+\newcommand{\IkhlasBox}[1]{\myURbox{\urSetTrans{#1}\quranayahur[Al-Ikhlas][1-4]}}
 
 \begin{document}
 \begin{arab}[utf]
-\para{\quranayah[Al-Ikhlas][1-4]}{\quranayahur[Al-Ikhlas][1-4]}
-\bigskip
-\urSetTrans{ahmedali}
-\para{\quranayahfa[Al-Ikhlas][1-4]}{\quranayahur[Al-Ikhlas][1-4]}
+\mybox{\quranayah[Al-Ikhlas][1-4]}{}\hfill\mybox{\quranayahfa[Al-Ikhlas][1-4]}{}\\
+\smallskip\IkhlasBox{1}\hfill\IkhlasBox{2}\\
+\smallskip\IkhlasBox{3}\hfill\IkhlasBox{4}\\
+\smallskip\IkhlasBox{5}\hfill\IkhlasBox{6}\\
+\smallskip\IkhlasBox{7}\hfill\IkhlasBox{8}\\
+\smallskip
 
 \compare{\quransurahur*}
 \compare{\quranayahur[1][1]}
