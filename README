@@ -1,6 +1,6 @@
 _____________________
 The quran-ur package
-v0.1
+v0.2
 
 The package is prepared for typesetting some of Urdu translations of the Holy Quran.
 The supported translations are done  by `Abul A'ala Maududi', 'Ahmed Raza Khan', 
@@ -9,12 +9,12 @@ The supported translations are done  by `Abul A'ala Maududi', 'Ahmed Raza Khan',
 
 For more information, please see the documentation.
 
-Current version release date: 2019/05/03
+Current version release date: 2020/03/07
 ___________________
 Seiied-Mohammad-Javad Razvian
 javadr@gmail.com
 
-Copyright © 2019
+Copyright © 2019-2020
 It may be distributed and/or modified under the LaTeX Project Public License,
 version 1.3c or higher (your choice). The latest version of
 this license is at: http://www.latex-project.org/lppl.txt

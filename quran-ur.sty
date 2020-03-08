@@ -1,6 +1,6 @@
 %% This is file `quran-ur.sty', and it's completely relies on the quran package.
 %% 
-%% Copyright © 2019 by Seiied-Mohammad-Javad Razavian
+%% Copyright © 2019-2020 by Seiied-Mohammad-Javad Razavian
 %% <javadr@gmail.com>
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -25,14 +25,11 @@
 %%
 %% To one having devoted his life to the Holy Quran
 %%
-%% Change Log
-%% ver 0.1 ## May 3rd, 2019
-%% initial commit
 \NeedsTeXFormat{LaTeX2e}
-\def\quranurdate{2019/05/03}
-\def\quranurversion{ver 0.1}
+\def\quranurdate{2020/03/07}
+\def\quranurversion{0.2}
 \ProvidesPackage{quran-ur}[%
-\quranurdate\space \quranurversion\space 
+\quranurdate\space v\quranurversion\space^^J
 Urdu translations extension to the quran package.%
 ]
 \RequirePackage{xstring}
@@ -42,13 +39,18 @@ Urdu translations extension to the quran package.%
 \DeclareOptionX*{\PassOptionsToPackage{\CurrentOption}{quran}}
 \DeclareOption*{\PackageWarning{quran-ur}{Unknown option ‘\CurrentOption’}}
 \ProcessOptionsX\relax
-\input{qurantext-urii.translation.def}%
 \ifur@all
     \ExecuteOptionsX{ahmedali,jalandhry,jawadi,junagarhi,kanzuliman,maududi,najafi,qadri}
 \else
     \ExecuteOptionsX{jalandhry}
 \fi
 \RequirePackage{quran}
+\ifqt@wordwise%
+    \let\qt@newcmd\newcommand
+\else%
+    \let\qt@newcmd\bidi@newrobustcmd
+\fi%
+\input{qurantext-urii.translation.def}%
 %
 \ifur@maududi%
     \PackageInfo{quran-ur}{Abul A'ala Maududi's translation is chosen.}%
@@ -125,9 +127,14 @@ Urdu translations extension to the quran package.%
 {%NO
 \setkeys{quran-ur}{trans=#1}}%
 %
-\makeatother
-\let\bidi@newrobustcmd\bidi@renewrobustcmd
-\makeatletter
+%\makeatother
+%\let\bidi@newrobustcmd\bidi@renewrobustcmd
+%\makeatletter
+\ifqt@wordwise%
+    \makeatother\let\qt@newcmd\renewcommand\makeatletter%
+\else%
+    \makeatother\let\qt@newcmd\bidi@renewrobustcmd\makeatletter%
+\fi%
 \ifcase\trans@ur%0
     \ifur@ahmedali%
         \ifx\basmalahur\relax\else%
@@ -284,159 +291,112 @@ Urdu translations extension to the quran package.%
     \fi%
 }%
 \let\qt@doqt@orig\qt@doqt
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \let\ToggleBasmalah@orig\ToggleBasmalah
-%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\basmalahur{شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے \qt@par}%
-%\bidi@newrobustcmd\ToggleBasmalahur{%
-%  \ifx\basmalahde\relax%
-%    \def\basmalahur{شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے \qt@par}%
-%  \else%
-%    \let\basmalahde\relax%
-%  \fi%
-%}%
+\def\Basmalahur{%
+        \begingroup%
+        \let\par\relax%
+        \def\qt@no##1{\relax}%
+        \quranayahur[1][1][1]%
+        \endgroup%
+}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\qt@dour{%
+\DeclareDocumentCommand\qt@dour{ o o }{%
     \addtocounter{qt@count}{1}%
+    \def\@qtexp{}%
     \loop%
-        \csname qurantrans@ur@\roman{qt@count}\endcsname%
+        \global\xdef\@qtexp{\@qtexp\csname qurantrans@ur@\roman{qt@count}\endcsname\ifnum\value{qt@count}=\qt@max\else\space\fi\qt@par}%
         \ifnum\value{qt@count}<\qt@max\relax%
-        { }% an extra space between verses
-        \qt@par%
         \addtocounter{qt@count}{1}%
     \repeat%
+    \IfNoValueTF{#1}%
+    {\@qtexp}%true
+    {\qt@WordCount=0\relax\c@qt@start=\numexpr#1-1\relax%
+    \readlist*\qt@words{\@qtexp}%
+        \IfNoValueTF{#2}%
+        {\c@qt@end=\numexpr\qt@wordslen+1\relax}{\c@qt@end=\numexpr#2+1\relax}%
+        \foreachitem\qt@word\in\qt@words{%
+            \ifnum\qt@wordcnt>\c@qt@start\ifnum\qt@wordcnt<\c@qt@end\qt@word\ifnum\qt@wordcnt=\numexpr\c@qt@end-1\relax\else\xspace\fi\fi\fi%
+        }%
+        \qt@showitems{\ifdefined\arabicfont\arabicfont\fi\showitems\qt@words}%
+    }%false
 }%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\qurantextur{%
-    \@ifstar\@@qurantextur\@qurantextur%
-}%
-\bidi@newrobustcmd\@@qurantextur[1][\qt@default]{%
+\DeclareDocumentCommand{\qurantextur}{ s O{\qt@default} o t{+} }{%
+    \IfBooleanTF{#4}{\def\qt@showitems##1{\footnote{##1}}}{\def\qt@showitems##1{\relax}}%
     \let\qt@doqt\qt@dour%
-    \@@qurantext[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
-}%
-\bidi@newrobustcmd\@qurantextur[1][\qt@default]{%
-    \let\qt@doqt\qt@dour%
-    \@qurantext[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
+    \IfBooleanTF{#1}%
+    {\IfBooleanTF{#4}{\qurantext*[#2][#3]+}{\qurantext*[#2][#3]}}%
+    {\IfBooleanTF{#4}{\qurantext[#2][#3]+}{\qurantext[#2][#3]}}%
+    \let\qt@doqt\qt@doqt@orig% 
+    \def\qt@showitems##1{\relax}%    
 }%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\quransurahur{%
-    \@ifstar\@@quransurahur\@quransurahur%
-}%
-\bidi@newrobustcmd\@@quransurahur[1][\qt@surah@default]{%
+\DeclareDocumentCommand\quransurahur{ s O{\qt@surah@default} }{%
     \let\qt@doqt\qt@dour%
-    \@@quransurah[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
-}%
-\bidi@newrobustcmd\@quransurahur[1][\qt@surah@default]{%
-    \let\qt@doqt\qt@dour%
-    \lowercase{\def\qt@arglc{#1}}%
-    \@quransurah[\qt@arglc]%
-    \let\qt@doqt\qt@doqt@orig%    
+    \IfBooleanTF{#1}%
+    {\quransurah*[#2]}%
+    {\quransurah[#2]}%
+    \let\qt@doqt\qt@doqt@orig%        
 }%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\quranayahur{%
-    \@ifstar\@@quranayahur\@quranayahur%
-}%
-\def\@@quranayahur[#1][#2]{%
+\DeclareDocumentCommand{\quranayahur}{ s o o o t{+} }{%
     \let\qt@doqt\qt@dour%
     \let\ToggleBasmalah\ToggleBasmalahur%
-    \@@quranayah[#1][#2]%
-    \let\qt@doqt\qt@doqt@orig%    
+    \IfBooleanTF{#1}%
+    {\IfBooleanTF{#5}{\quranayah*[#2][#3][#4]+}{\quranayah*[#2][#3][#4]}}%
+    {\IfBooleanTF{#5}{\quranayah[#2][#3][#4]+}{\quranayah[#2][#3][#4]}}%    
+    \let\qt@doqt\qt@doqt@orig%
     \let\ToggleBasmalah\ToggleBasmalah@orig%
 }%
-\def\@quranayahur[#1][#2]{%
-    \lowercase{\def\qt@arglc{#1}}%
-    \let\qt@doqt\qt@dour%
-    \let\ToggleBasmalah\ToggleBasmalahur%    
-    \@quranayah[\qt@arglc][#2]%
-    \let\qt@doqt\qt@doqt@orig%    
-    \let\ToggleBasmalah\ToggleBasmalah@orig%    
-}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\quranjuzur{%
-    \@ifstar\@@quranjuzur\@quranjuzur%
-}%
-\def\@@quranjuzur[#1]{%
+\DeclareDocumentCommand{\quranjuzur}{ s o }{%
     \let\qt@doqt\qt@dour%
-    \@@quranjuz[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
-}%
-\def\@quranjuzur[#1]{%
-    \let\qt@doqt\qt@dour%
-    \@quranjuz[#1]%
+    \IfBooleanTF{#1}%
+    {\quranjuz*[#2]}%
+    {\quranjuz[#2]}%        
     \let\qt@doqt\qt@doqt@orig%    
 }%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\quranpageur{%
-    \@ifstar\@@quranpageur\@quranpageur%
-}%
-\def\@@quranpageur[#1]{%
+\DeclareDocumentCommand{\quranpageur}{ s o }{%
     \let\qt@doqt\qt@dour%
-    \@@quranpage[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
-}%
-\def\@quranpageur[#1]{%
-    \let\qt@doqt\qt@dour%
-    \@quranpage[#1]%
+    \IfBooleanTF{#1}%
+    {\quranpage*[#2]}%
+    {\quranpage[#2]}%        
     \let\qt@doqt\qt@doqt@orig%    
 }%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\quranquarterur{%
-  \@ifstar\@@quranquarterur\@quranquarterur%
-}%
-\def\@@quranquarterur[#1]{%
+\DeclareDocumentCommand{\quranquarterur}{ s o }{%
     \let\qt@doqt\qt@dour%
-    \@@quranquarter[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
-}%
-\def\@quranquarterur[#1]{%
-    \let\qt@doqt\qt@dour%
-    \@quranquarter[#1]%
+    \IfBooleanTF{#1}%
+    {\quranquarter*[#2]}%
+    {\quranquarter[#2]}%        
     \let\qt@doqt\qt@doqt@orig%    
 }%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\quranrukuur{%
-    \@ifstar\@@quranrukuur\@quranrukuur%
-}%
-\def\@@quranrukuur[#1]{%
+\DeclareDocumentCommand{\quranrukuur}{ s o }{%
     \let\qt@doqt\qt@dour%
-    \@@quranruku[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
-}%
-\def\@quranrukulde[#1]{%
-    \let\qt@doqt\qt@dode%
-    \@quranruku[#1]%
+    \IfBooleanTF{#1}%
+    {\quranruku*[#2]}%
+    {\quranruku[#2]}%        
     \let\qt@doqt\qt@doqt@orig%    
 }%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\quranhizbur{%
-    \@ifstar\@@quranhizbur\@quranhizbur%
-}%
-\def\@@quranhizbur[#1]{%
+\DeclareDocumentCommand{\quranhizbur}{ s o }{%
     \let\qt@doqt\qt@dour%
-    \@@quranhizb[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
-}%
-\def\@quranhizbur[#1]{%
-    \let\qt@doqt\qt@dour%
-    \@quranhizb[#1]%
+    \IfBooleanTF{#1}%
+    {\quranhizb*[#2]}%
+    {\quranhizb[#2]}%        
     \let\qt@doqt\qt@doqt@orig%    
 }%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\bidi@newrobustcmd\quranmanzilur{%
-    \@ifstar\@@quranmanzilur\@quranmanzilur%
-}
-\def\@@quranmanzilur[#1]{%
+\DeclareDocumentCommand{\quranmanzilur}{ s o }{%
     \let\qt@doqt\qt@dour%
-    \@@quranmanzil[#1]%
+    \IfBooleanTF{#1}%
+    {\quranmanzil*[#2]}%
+    {\quranmanzil[#2]}%        
     \let\qt@doqt\qt@doqt@orig%    
 }%
-\def\@quranmanzilur[#1]{%
-    \let\qt@doqt\qt@dour%
-    \@quranmanzil[#1]%
-    \let\qt@doqt\qt@doqt@orig%    
-}%
-%\urSetTrans{jalandhry}%default translation
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %% End of file `quran-ur.sty'.

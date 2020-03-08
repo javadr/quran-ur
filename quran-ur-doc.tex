@@ -21,9 +21,9 @@
 \bidi@undef\XeLaTeX
 \makeatother
 \usepackage{arabxetex}
-\makeatletter
-\bidi@BeforeBeginEnvironment{declcs}{\vspace*{-4mm}}
-\makeatother
+%\makeatletter
+%\bidi@BeforeBeginEnvironment{declcs}{\vspace*{-4mm}}
+%\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -61,11 +61,10 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{\includegraphics[scale=.3]{quran.png}\\
-The \xpackage{quran-ur} Package\footnote{To one having devoted his life to the Quran}\\
-\Large User documentation for \quranurversion}
+The \xpackage{quran-ur} Package\footnote{To one having devoted his life to the holy Quran}}
 \author{Seiied Mohammad Javad Razavian\\\xemail{javadr@gmail.com}}
 
-\date{\quranurdate}
+\date{\quranurdate\space Version \quranurversion}
 
 \begin{document}
 \maketitle
@@ -76,11 +75,12 @@ The \xpackage{quran-ur} Package\footnote{To one having devoted his life to the Q
 \vfill
 \section{Introduction}
 The \xpackage{quran} package provides several macros for
-typesetting the whole or any parts of The Holy Quran based on its popular divisions. That package also develops 
-commands for some translations of the Holy Quran including German, Engilsh, and Persian. 
+typesetting the whole or any parts of the holy Quran based on its popular divisions. 
+That package also develops 
+commands for some translations of the holy Quran including German, Engilsh, and Persian. 
 Some people asked me to include the other translations into the \xpackage{quran} package, 
 but because of some technical issues I decided to create new packages for other translations. 
-One of these variations is \xpackage{quran-ur} including all Urdu translations of the Holy Quran 
+One of these variations is \xpackage{quran-ur} including all Urdu translations of the holy Quran 
 provided by \url{tanzil.net}, i.e. 
 \emph{``Abul A'ala Maududi''}, \emph{``Ahmed Raza Khan''}, 
 \emph{``Ahmed Ali''}, \emph{``Fateh Muhammad Jalandhry''},
@@ -96,22 +96,22 @@ After loading the package, it writes some information about itself to the
 terminal and to the log file, too. The information is something like:
 
 \begin{lstlisting}[style=BashInputStyle, language=tex, escapechar={|}]
-Package: quran-ur |\quranurdate| |\quranurversion| Urdu translations extension to the quran package.
+Package: quran-ur |\quranurdate| v|\quranurversion| 
+Urdu translations extension to the quran package.
 \end{lstlisting}
 
 
 \section{Options of The Package}\label{sec:qurantypesetting}
-There are eight options by the names of \xpackage{ahmedali}, \xpackage{jalandhry}, \xpackage{jawadi}, 
-\xpackage{junagarhi}, \xpackage{kanzuliman}, \xpackage{maududi}, \xpackage{najafi}, and \xpackage{qadri}.
+There are eight options by the names of \xoption{ahmedali}, \xoption{jalandhry}, \xoption{jawadi}, 
+\xoption{junagarhi}, \xoption{kanzuliman}, \xoption{maududi}, \xoption{najafi}, and \xoption{qadri}.
 %\marginpar{\ttfamily ahmedali\smallskip}\marginpar{\ttfamily jalandhry\smallskip} 
 %\marginpar{\ttfamily jawadi}\marginpar{\ttfamily junagarhi\smallskip}
 %\marginpar{\ttfamily kanzuliman}\marginpar{\ttfamily maududi\smallskip}
 %\marginpar{\ttfamily najafi}\marginpar{\ttfamily qadri\smallskip}
 %\marginpar{\ttfamily all\smallskip}
-If you pass any combinations of these options, you will be enabled to typeset these translations in a way 
-that the \xpackage{quran} package does. 
-There is also \xpackage{all} option which loads all Urdu translations provided by the \xpackage{quran-ur} package.
-The package loads \xpackage{jalandhry} option by default.
+If you pass any combinations of these options, the package will be enabled to typeset these translations in the way that the \xpackage{quran} package does. 
+There is also \xoption{all} option which loads all Urdu translations provided by the \xpackage{quran-ur} package.
+The package loads \xoption{jalandhry} option by default.
 
 This package is completely built on top of the \xpackage{quran} package, therefore you can pass every options
 defined in that package to the \xpackage{quran-ur} package. 
@@ -143,10 +143,10 @@ All Urdu translations provided by the package are shown in table~\ref{tab:urtran
 
 \subsection{How to Change the Current Urdu Translation}
     The \xpackage{quran-ur} package uses jalandhry's translation by default. 
-    The following macro could be used to change the default Urdu tranliteration. 
+    The following macro could be used to change the default Urdu translation. 
     \begin{declcs}{urSetTrans}\marg{index}
     \end{declcs}    
-    The \textit{index} could be an integer or a name; both ``order'' and ``option's name'' columns
+    The \meta{index} could be an integer or a name; both ``order'' and ``option's name'' 
     shown in Table~\ref{tab:urtrans} are appliable. Both \cs{urSetTrans\{3\}} and \cs{urSetTrans\{jawadi\}}, for example,
     have the same effect. 
     

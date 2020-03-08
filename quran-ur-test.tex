@@ -19,14 +19,17 @@
 \newcommand{\mybox}[2]{\noindent%
 \begin{minipage}{.48\textwidth}
 #1
-#2\\
+#2\par
 \end{minipage}}
+
 \newcommand{\myURbox}[1]{\mybox{#1}{\hrulefill\fbox{\makebox[2cm]{\urGetTrans}}}}
 \newcommand{\IkhlasBox}[1]{\myURbox{\urSetTrans{#1}\quranayahur[Al-Ikhlas][1-4]}}
 
 \begin{document}
 \begin{arab}[utf]
-\mybox{\quranayah[Al-Ikhlas][1-4]}{}\hfill\mybox{\quranayahfa[Al-Ikhlas][1-4]}{}\\
+\mybox{\quranayah[Al-Ikhlas][1-4]}{\hrulefill\fbox{\makebox[2cm]{Al-Ikhlas}}} \hfill 
+\mybox{\quranayahfa[Al-Ikhlas][1-4]}{\hrulefill\fbox{\makebox[2cm]{Persian}}}
+
 \smallskip\IkhlasBox{1}\hfill\IkhlasBox{2}\\
 \smallskip\IkhlasBox{3}\hfill\IkhlasBox{4}\\
 \smallskip\IkhlasBox{5}\hfill\IkhlasBox{6}\\
