@@ -1,9 +1,7 @@
 # The quran package
 Copyright © 2019-2023
 
-The `quran-ur` package is an extension of the `quran` LaTeX package, designed to enhance the typesetting of the Holy Quran by incorporating specific Urdu translations. It provides support for German translations carried out by notable translators such as `Abul A'ala Maududi`, `Ahmed Raza Khan`,
-`Ahmed Ali`, `Fateh Muhammad Jalandhry`, `Tahir ul Qadri`, `Syed Zeeshan Haider Jawadi`,
-`Muhammad Junagarhi`, and `Muhammad Hussain Najafi`.
+The [`quran-ur`](https://ctan.org/pkg/quran-ur) package is an extension of the [`quran`](https://ctan.org/pkg/quran) LaTeX package, designed to enhance the typesetting of the Holy Quran by incorporating specific Urdu translations. It provides support for German translations carried out by notable translators such as `Abul A'ala Maududi`, `Ahmed Raza Khan`, `Ahmed Ali`, `Fateh Muhammad Jalandhry`, `Tahir ul Qadri`, `Syed Zeeshan Haider Jawadi`, `Muhammad Junagarhi`, and `Muhammad Hussain Najafi`.
 
 ### Sample
 
