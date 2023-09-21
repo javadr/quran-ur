@@ -54,7 +54,7 @@ ctan:
 
 QURANDATE := $(shell grep "quranurdate{" tex/quran-ur.sty | cut -d'{' -f2 | tr -d '}')
 QURANVERSION := $(shell grep "quranurversion{" tex/quran-ur.sty | cut -d'{' -f2 | tr -d '}')
-YEAR := $(shell date +%Y)
+YEAR := "$(shell echo ${QURANDATE} | cut -d'/' -f1)"
 readme-file := README
 
 .PHONY: readme
